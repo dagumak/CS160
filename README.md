@@ -1,4 +1,4 @@
-CS160PG
+CS160
 =======
 
-Playground for CS160 class. Here you'll play and learn git as you need.
+Project folder for CS160 class. We'll use this folder for actual project related things.
