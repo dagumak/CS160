@@ -1,3 +1,6 @@
+<?php
+include 'search.php';
+?>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -20,7 +23,7 @@
 			<center><div id="loader" style="display:none;margin-top:175px;background: url(img/loading.gif) no-repeat center center; width: 175px;height: 175px;"></div></center>
 			<div id="results"></div>
 			
-			<?php require_once('./monster.php'); ?>
+			
 		</div>
 	
 	
@@ -40,7 +43,7 @@
 				
 				$.ajax({  
 					type: "GET",  
-				  	url: "monster.php",  
+				  	url: "search.php",  
 				  	data: dataString,  
 				  	success: function(data) {  
 					  	$("#loader").hide();
