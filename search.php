@@ -11,7 +11,10 @@ if (isset($_GET["location"]) && isset($_GET["description"])) {
     //
     // Any sorting can be done here
     //
-	
+    //sort by date
+	usort($JOBS, function($a, $b) {
+			return $a->getDate() - $b->getDate();
+	});
 	echo '<table class="table table-striped">
 			<thead>
 			  <tr>
