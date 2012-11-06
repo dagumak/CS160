@@ -77,7 +77,7 @@ if (isset($_GET["location"]) && isset($_GET["description"])) {
                 <td>" . $job->getLocation() . "</td>
                 <td>" . $job->getCompany() . "</td>
                 <td>" . $job->getDate() . "</td>
-                <td><a href=\"https://twitter.com/share\" class=\"twitter-share-button\" data-dnt=\"false\" data-count=\"none\" data-related=\"qi:Social Media Expert\" data-hashtags=\"JobLube\" data-text=\"I found this job: ". $job->getDescription() . $job->getURL() ."\">Tweet</a></td>
+                <td><a href=\"https://twitter.com/share\" class=\"twitter-share-button\" data-dnt=\"false\" data-count=\"none\" data-related=\"qi:Social Media Expert\" data-hashtags=\"JobLube\" data-text=\"I found this job: ". $job->getDescription() . " " . $job->getURL() ."\">Tweet</a></td>
               </tr>";
     }
 
