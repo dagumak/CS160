@@ -1,6 +1,5 @@
 <?php
 
-require_once('scrapers/simple_html_dom.php');
 require_once('scrapers/JobListing.php');
 require_once('scrapers/monster/MonsterJob.php');
 
