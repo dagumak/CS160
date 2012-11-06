@@ -22,7 +22,7 @@ if (isset($_GET["location"]) && isset($_GET["description"])) {
     }
 
     //If there are any results returned from scraping monster, collect them.
-    if ($monster_results = $monster_scraper->scrape_monster($_GET["location"], $_GET["description"])) {
+    if (($monster_results = $monster_scraper->scrape_monster($_GET["location"], $_GET["description"])) != null) {
         $JOBS += $monster_results;
     }
 
