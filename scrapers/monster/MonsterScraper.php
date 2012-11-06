@@ -11,8 +11,8 @@ class MonsterScraper {
 
     public function scrape_monster($location, $description) {
 	
-		$numKeywords = substr_count($description, ','); //This counts the number of independently inputed search terms
-		$tail = str_repeat("5", $numKeywords); //Monster URLS seem to append a '5' for every separated search term
+		$numTerms = substr_count($description, ','); //This counts the number of independently inputed search terms
+		$tail = str_repeat("5", $numTerms); //Monster URLS seem to append a '5' for every separated search term
 		
 		//Format description and location
 		$description = str_replace(' ', '-', $description); //Removes spaces for URL
