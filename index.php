@@ -20,11 +20,15 @@ require_once 'database/db_util.php';
 					<button type="submit" class="btn" id='search-button'>Search</button>
 				</div>
 				<div id="trending">
-					Trending: 
+					Trending Keywords: 
 					<?php
 						$TRENDING = get_top_search_terms(); 
-						foreach ($TRENDING as $trend) {
-						    echo " " .$trend. "\n";
+						for ($i = 0; $i < count($TRENDING); $i++) {
+						    echo trim($TRENDING[$i]);
+                                                    if($i < count($TRENDING) - 1) {
+                                                        echo ",";
+                                                    }
+                                                    echo " ";
 						}
 					?>
 				</div>
