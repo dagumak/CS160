@@ -8,8 +8,11 @@ if (isset($_GET["location"]) && isset($_GET["description"])) {
     $monster_scraper = new MonsterScraper();
     $JOBS = array();
 	
+	//Format search terms for relevance-search keywords
+	$input = str_replace(',', ' ', $_GET["description"]);
+	
 	//Get keyword tokens from description input
-	$KEYWORDS = explode(" ", $_GET["description"]);
+	$KEYWORDS = explode(" ", $input);
 	
     //If there are any results returned from scraping monster, collect them.
     if ($monster_results = $monster_scraper->scrape_monster($_GET["location"], $_GET["description"])) {
@@ -40,12 +43,13 @@ if (isset($_GET["location"]) && isset($_GET["description"])) {
 						$aNum = 0;
 						$bNum = 0;
 						foreach($KEYWORDS as $k) {
+							if($k == "")continue;
 							if(strpos($aDescription, $k) === false);
 							else $aNum++;
 							if(strpos($bDescription, $k) === false);
 							else $bNum++;
 						}
-						return $aNum - $bNum;
+						return ($aNum < $bNum) ? -1 : 1;
 					}
 				);
 				break;	
