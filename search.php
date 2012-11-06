@@ -16,6 +16,7 @@ if (isset($_GET["location"]) && isset($_GET["description"])) {
 
     //Get keyword tokens from description input
     $KEYWORDS = explode(" ", $input);
+    //Log each term
     foreach($KEYWORDS as $keyword) {
         log_search_term($keyword);
     }
