@@ -66,7 +66,7 @@ if (isset($_GET["location"]) && isset($_GET["description"])) {
     foreach ($JOBS as $job) {
 
         echo "<tr>
-				<td>" . $job->getDescription() . "</td>
+				<td><a href='" . $job->getURL() . "'>" . $job->getDescription() . "</a></td>
 				<td>" . $job->getLocation() . "</td>
 				<td>" . $job->getCompany() . "</td>
 				<td>" . $job->getDate() . "</td>
