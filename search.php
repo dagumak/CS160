@@ -8,14 +8,26 @@ if (isset($_GET["location"]) && isset($_GET["description"])) {
     if ($monster_results = $monster_scraper->scrape_monster($_GET["location"], $_GET["description"])) {
         $JOBS += $monster_results;
     }
-    //
-    // Any sorting can be done here
-    //
-    // sort by date
-	usort($JOBS, function($a, $b) {
-			return $a->getDate() - $b->getDate();
-	});
-	
+
+
+	if (isset($_GET["sort-by"])) {
+		switch($_GET["sort-by"]) {
+			case 'date':
+				// Run function to sort the data by date and re-set the variable 
+			    // sort by date
+				usort($JOBS, 
+					function($a, $b) {
+						return $a->getDate() - $b->getDate();
+					}
+				);
+				break;
+			case 'relevance':
+				// Run function to sort the data by relevance and re-set the variable 
+				break;	
+		}
+
+	}
+
 	echo '<table class="table table-striped">
 			<thead>
 			  <tr>

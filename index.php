@@ -23,8 +23,8 @@ include 'search.php';
 			<center><div id="loader" style="display:none;margin-top:175px;background: url(img/loading.gif) no-repeat center center; width: 175px;height: 175px;"></div></center>
 			<div id="sort">
 				Sort by:
-				<a href='#'>date</a>
-				<a href='#'>relevance</a>
+				<a id='date'>date</a>
+				<a id='relevance'>relevance</a>
 			</div>	
 			<div id="results"></div>
 			
@@ -37,27 +37,24 @@ include 'search.php';
 		
 		
 		<script>
-			var x = 0
-			$("#search input[type=text]").keyup(function(event){
-			    if(event.keyCode == 13){
-			    	$("#search-button").click()
+			function getResults() {
+ 				var sort = ''; 				
+			    if (arguments.length == 1) {
+			        sort = arguments[0];
 			    }
-			});
-
-			$("#search-button").click(function() 
-			{	
-				$("#sort").hide();	
 
 				if( $("#description").val() == '' ) {
-					// We can do client side checking here, be sure to check on server side too.
+					// We can do client side checking here and throw errors
+					// Be sure to check on server side too.
 					return
 				}
 
+				$("#sort").hide();	
 				$("#loader").show();
 				$('#results').html(""); 	
 				var description = $("input#description").val();
 				var location = $("input#location").val();
-				var dataString = 'description='+ description + '&location=' + location;  
+				var dataString = 'description='+ description + '&location=' + location + '&sort-by=' + sort;  
 				
 				$.ajax({  
 					type: "GET",  
@@ -69,7 +66,23 @@ include 'search.php';
 						$('#results').html(data); 
 				  	}  
 				});
+			}
+
+			$("#search-button").click(function(){	
+				getResults()
 			});
+
+
+			$("#date, #relevance").click(function(){
+				getResults($(this).html())
+			});
+
+			$("#search input[type=text]").keyup(function(event){
+			    if(event.keyCode == 13){
+			    	$("#search-button").click()
+			    }
+			});
+
 		</script>
 	</body>
 </html>
