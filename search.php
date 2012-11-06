@@ -60,27 +60,30 @@ if (isset($_GET["location"]) && isset($_GET["description"])) {
     }
 
     echo '<table class="table table-striped">
-			<thead>
-			  <tr>
-				<th>Description</th>
-				<th>Location</th>
-				<th>Company</th>
-				<th>Date</th>
-			  </tr>
-			</thead>
-			<tbody>';
+            <thead>
+              <tr>
+                <th>Description</th>
+                <th>Location</th>
+                <th>Company</th>
+                <th>Date</th>
+                <th>Twitter</th>
+              </tr>
+            </thead>
+            <tbody>';
     foreach ($JOBS as $job) {
 
         echo "<tr>
-				<td><a href='" . $job->getURL() . "'>" . $job->getDescription() . "</a></td>
-				<td>" . $job->getLocation() . "</td>
-				<td>" . $job->getCompany() . "</td>
-				<td>" . $job->getDate() . "</td>
-		  	  </tr>";
+                <td><a href='" . $job->getURL() . "'>" . $job->getDescription() . "</a></td>
+                <td>" . $job->getLocation() . "</td>
+                <td>" . $job->getCompany() . "</td>
+                <td>" . $job->getDate() . "</td>
+                <td><a href=\"https://twitter.com/share\" class=\"twitter-share-button\" data-dnt=\"false\" data-count=\"none\" data-related=\"qi:Social Media Expert\" data-hashtags="JobLube" data-text=\"I found this job: ". $job->getDescription() . $job->getURL() ."\">Tweet</a></td>
+              </tr>";
     }
 
     echo '</tbody> 
         </table> 
-        </div>';
+        </div>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>';
 }
 ?>
