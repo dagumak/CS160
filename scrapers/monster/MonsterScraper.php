@@ -17,12 +17,11 @@ class MonsterScraper {
         $location = str_replace(' ', '-', $location); //Removes spaces for URL
         $location = str_replace(',', '__2C', $location); //Formats comma for URL ('__2C' = ',') 
 
-        $URL = "http://jobsearch.monster.com/search/" . $description . "_5" . $tail . "?where=" . $location;
+        $url = "http://jobsearch.monster.com/search/" . $description . "_5" . $tail . "?where=" . $location;
 
         // Create DOM from URL or file
         $ckfile = "cookies.txt";
         $useragent = "Mozilla/5.0 (iPhone; U; CPU iPhone OS 3_0 like Mac OS X; en-us) AppleWebKit/528.18 (KHTML, like Gecko) Version/4.0 Mobile/7A341 Safari/528.16"; // Sets user agent to iphone
-        $url = "http://jobsearch.monster.com/search/" . str_replace(' ', '-', $description) . "_5?where=" . $location;
 
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_USERAGENT, $useragent); // set user agent
