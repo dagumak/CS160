@@ -10,7 +10,16 @@ require_once('scrapers/monster/MonsterJob.php');
 class MonsterScraper {
 
     public function scrape_monster($location, $description) {
-        $URL = "http://jobsearch.monster.com/search/" . str_replace(' ', '-', $description) . "_5?where=" . $location;
+	
+		$numKeywords = substr_count($description, ','); //This counts the number of independently inputed search terms
+		$tail = str_repeat("5", $numKeywords); //Monster URLS seem to append a '5' for every separated search term
+		
+		//Format description and location
+		$description = str_replace(' ', '-', $description); //Removes spaces for URL
+		$location = str_replace(' ', '-', $location); //Removes spaces for URL
+		$location = str_replace(',', '__2C', $location); //Formats comma for URL ('__2C' = ',') 
+		
+        $URL = "http://jobsearch.monster.com/search/" . $description . "_5" . $tail . "?where=" . $location;
 
         $html = file_get_html($URL);
 
