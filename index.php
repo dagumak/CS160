@@ -1,5 +1,5 @@
 <?php
-include 'search.php';
+require 'search.php';
 ?>
 <!DOCTYPE html>
 <html>
