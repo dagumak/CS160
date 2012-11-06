@@ -1,12 +1,14 @@
 <?php
 
 require_once 'scrapers/monster/MonsterScraper.php';
-
+require_once 'database/db_util.php';
+require_once 'trending.php';
 //Array for holding keyword tokens from description input
 $KEYWORDS = array();
 
 if (isset($_GET["location"]) && isset($_GET["description"])) {
     $monster_scraper = new MonsterScraper();
+    $db_conn = get_job_lube_db_conn();
     $JOBS = array();
 
     //Format search terms for relevance-search keywords
@@ -14,6 +16,10 @@ if (isset($_GET["location"]) && isset($_GET["description"])) {
 
     //Get keyword tokens from description input
     $KEYWORDS = explode(" ", $input);
+    //Log each term
+    foreach($KEYWORDS as $keyword) {
+        log_search_term($keyword);
+    }
 
     //If there are any results returned from scraping monster, collect them.
     if ($monster_results = $monster_scraper->scrape_monster($_GET["location"], $_GET["description"])) {
