@@ -1,6 +1,3 @@
-<?php
-require 'search.php';
-?>
 <!DOCTYPE html>
 <html>
 	<head>
