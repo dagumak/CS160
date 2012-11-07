@@ -4,6 +4,9 @@ require_once 'scrapers/monster/MonsterScraper.php';
 //Array for holding keyword tokens from description input
 $KEYWORDS = array();
 
+//Variable for the company to be filtered
+$companyFilter = '';
+
 if (isset($_GET["location"]) && isset($_GET["description"])) {
     $monster_scraper = new MonsterScraper();
     $JOBS = array();
@@ -16,7 +19,9 @@ if (isset($_GET["location"]) && isset($_GET["description"])) {
         $JOBS += $monster_results;
 		
     }
-
+    	 if (isset($_GET["filter-by-company"])) {
+    		$companyFilter = $_GET["filter-by-company"];
+    	} 
 
 	if (isset($_GET["sort-by"])) {
 		switch($_GET["sort-by"]) {
@@ -63,18 +68,37 @@ if (isset($_GET["location"]) && isset($_GET["description"])) {
 			  </tr>
 			</thead>
 			<tbody>';
-    foreach ($JOBS as $job) {
 
-        echo "<tr>
-				<td>" . $job->getDescription() . "</td>
-				<td>" . $job->getLocation() . "</td>
-				<td>" . $job->getCompany() . "</td>
-				<td>" . $job->getDate() . "</td>
-		  	  </tr>";
+    foreach ($JOBS as $job) {
+    	    //if the companyFilter is empty or if the job contains the companyFilter, then show the job
+    	    if (isSubstring($job->getCompany(), $companyFilter)) {
+    	    	    echo "<tr>
+    	    	    	<td>" . $job->getDescription() . "</td>
+    	    	    	<td>" . $job->getLocation() . "</td>
+    	    	    	<td>" . $job->getCompany() . "</td>
+    	    	    	<td>" . $job->getDate() . "</td>
+    	    	    </tr>";
+    	    }
     }
 
     echo '</tbody> 
         </table> 
         </div>';
 }
+
+/* function to see if the second string is part of the first string 
+	same as strpos except if the second string is empty then this
+	function returns true */
+function isSubstring($mainString, $subString) {
+	if ($subString == '' or $subString == null) {
+		return true;
+	}
+	else {
+		//convert both strings to lower case
+		$mainString = strtolower($mainString);
+		$subString = strtolower($subString);
+		return strpos($mainString, $subString);
+	}
+}
+
 ?>

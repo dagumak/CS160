@@ -21,24 +21,30 @@ require 'search.php';
 			</center>
 			
 			<center><div id="loader" style="display:none;margin-top:175px;background: url(img/loading.gif) no-repeat center center; width: 175px;height: 175px;"></div></center>
+			
 			<div id="sort">
 				Sort by:
 				<a id='date'>date</a>
 				<a id='relevance'>relevance</a>
 			</div>	
-			<div id="results"></div>
 			
+			<div id="filter">
+				Filter by company:
+				<input type = "text" id = "companyName" name="companyName" placeholder="Company">
+				<button type = "submit" class="btn" id='filter-button'>Filter</button>
+			</div>
+			<div id="results"></div>
 			
 		</div>
 	
-	
+		
 		<script src="http://code.jquery.com/jquery-latest.js"></script>
 		<script src="js/bootstrap.min.js"></script>
 		
 		
 		<script>
 			function getResults() {
- 				var sort = ''; 				
+ 				var sort = ''; 	
 			    if (arguments.length == 1) {
 			        sort = arguments[0];
 			    }
@@ -49,12 +55,14 @@ require 'search.php';
 					return
 				}
 
-				$("#sort").hide();	
+				$("#sort").hide();
+				$("#filter").hide();
 				$("#loader").show();
 				$('#results').html(""); 	
 				var description = $("input#description").val();
 				var location = $("input#location").val();
-				var dataString = 'description='+ description + '&location=' + location + '&sort-by=' + sort;  
+				var theCompany = $("input#companyName").val();
+				var dataString = 'description='+ description + '&location=' + location + '&sort-by=' + sort + '&filter-by-company=' + theCompany;
 				
 				$.ajax({  
 					type: "GET",  
@@ -62,12 +70,14 @@ require 'search.php';
 				  	data: dataString,  
 				  	success: function(data) {  
 					  	$("#loader").hide();
+					  	$("#filter").show();
 					  	$("#sort").show();
 						$('#results').html(data); 
 				  	}  
 				});
 			}
-
+			
+			$("#filter").hide();
 			$("#search-button").click(function(){	
 				getResults()
 			});
@@ -76,7 +86,11 @@ require 'search.php';
 			$("#date, #relevance").click(function(){
 				getResults($(this).html())
 			});
-
+			
+			$("#filter-button").click(function(){
+				getResults()
+			});
+			
 			$("#search input[type=text]").keyup(function(event){
 			    if(event.keyCode == 13){
 			    	$("#search-button").click()
