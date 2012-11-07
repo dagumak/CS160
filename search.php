@@ -86,7 +86,9 @@ if (isset($_GET["location"]) && isset($_GET["description"])) {
             <tbody>';
     foreach ($JOBS as $job) {
     	 //if the companyFilter is empty or if the job contains the companyFilter, then show the job
-    	    if (isSubstring($job->getCompany(), $companyFilter)) {
+    	    if (isSubstring($job->getCompany(), $companyFilter) !== false) {
+    	    	    //reason for comparing the above statement with !==false is b/c 
+    	    	    // in the strpos(mainString, subString), if subString starts with the first character, strpos will return 0 (which will return false)
     	    	echo "<tr>
                 	<td><a class='post_link' href='" . $job->getURL() . "'>" . $job->getDescription() . "</a></td>
 			 <td>" . get_views($job->getURL()) . "</td>
@@ -118,7 +120,7 @@ $(".post_link").click(function(e) {
 	  	}  
 	});
 });
-				</script>';
+	</script>';
 }
 
 /* function to see if the second string is part of the first string 
