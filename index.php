@@ -92,7 +92,7 @@ require_once 'database/db_util.php';
 			    	$("#search-button").click()
 			    }
 			});
-
+			
 		</script>
 	</body>
 </html>

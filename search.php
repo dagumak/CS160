@@ -3,13 +3,14 @@
 require_once 'scrapers/monster/MonsterScraper.php';
 require_once 'database/db_util.php';
 require_once 'trending.php';
+require_once 'views.php';
 
 //Array for holding keyword tokens from description input
 $KEYWORDS = array();
 
 if (isset($_GET["location"]) && isset($_GET["description"])) {
     $monster_scraper = new MonsterScraper();
-    $db_conn = get_job_lube_db_conn();
+    // $db_conn = get_job_lube_db_conn();
     $JOBS = array();
 
     //Format search terms for relevance-search keywords
@@ -70,6 +71,7 @@ if (isset($_GET["location"]) && isset($_GET["description"])) {
             <thead>
               <tr>
                 <th>Description</th>
+                <th>Views</th>
                 <th>Location</th>
                 <th>Company</th>
                 <th>Date</th>
@@ -80,7 +82,8 @@ if (isset($_GET["location"]) && isset($_GET["description"])) {
     foreach ($JOBS as $job) {
 
         echo "<tr>
-                <td><a href='" . $job->getURL() . "'>" . $job->getDescription() . "</a></td>
+                <td><a class='post_link' href='" . $job->getURL() . "'>" . $job->getDescription() . "</a></td>
+					 <td>" . get_views($job->getURL()) . "</td>
                 <td>" . $job->getLocation() . "</td>
                 <td>" . $job->getCompany() . "</td>
                 <td>" . $job->getDate() . "</td>
@@ -90,6 +93,23 @@ if (isset($_GET["location"]) && isset($_GET["description"])) {
     echo '</tbody> 
         </table> 
         </div>
-        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>';
+        <script>
+				!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+
+
+$(".post_link").click(function(e) {
+	e.preventDefault();
+	var url = $(this).attr("href")
+	
+	$.ajax({  
+		type: "POST",  
+	  	url: "add_post.php",  
+	  	data: { url: url },  
+	  	success: function() {  
+		  	window.location = url;
+	  	}  
+	});
+});
+				</script>';
 }
 ?>
