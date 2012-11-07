@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Returns a Mysqli connectiion to the job_lube database
+ * @return \mysqli
+ */
 function get_job_lube_db_conn() {
     $credentials = parse_ini_file("db_credentials.ini", true);
     $host = $credentials["job_lube_credentials"]["host"];

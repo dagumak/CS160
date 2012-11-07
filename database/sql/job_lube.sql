@@ -40,6 +40,19 @@ CREATE TABLE IF NOT EXISTS `search_log` (
 INSERT INTO `search_log` (`id`, `entry_time`, `term`) VALUES
 (1, '2012-11-04 06:23:08', 'butts');
 
+--
+-- Table structure for table `search_log`
+--
+
+CREATE TABLE IF NOT EXISTS `viewed_posts` (
+	`url` varchar (250) NOT NULL,
+  `views` int(11) default 1,
+  PRIMARY KEY (`url`)
+	-- FOREIGN KEY (search_log_id) REFERENCES search_log(id)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+create index url_index on viewed_posts (url); 
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

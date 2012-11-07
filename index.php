@@ -1,5 +1,6 @@
 <?php
-require 'search.php';
+require_once 'trending.php';
+require_once 'database/db_util.php';
 ?>
 <!DOCTYPE html>
 <html>
@@ -17,6 +18,19 @@ require 'search.php';
 					<input type="text" id="description" class="input-large" placeholder="Description / Keywords" name="description" value="<?php if(isset($_GET['description'])) { echo $_GET['description']; }?>">
 					<input type="text" id="location" class="input-large" placeholder="Zip Code" name="location" value="<?php if(isset($_GET['location'])) { echo $_GET['location']; }?>">
 					<button type="submit" class="btn" id='search-button'>Search</button>
+				</div>
+				<div id="trending">
+					Trending Keywords: 
+					<?php
+						$TRENDING = get_top_search_terms(); 
+						for ($i = 0; $i < count($TRENDING); $i++) {
+						    echo trim($TRENDING[$i]);
+                                                    if($i < count($TRENDING) - 1) {
+                                                        echo ",";
+                                                    }
+                                                    echo " ";
+						}
+					?>
 				</div>
 			</center>
 			
@@ -96,7 +110,7 @@ require 'search.php';
 			    	$("#search-button").click()
 			    }
 			});
-
+			
 		</script>
 	</body>
 </html>

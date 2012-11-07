@@ -1,5 +1,9 @@
 <?php
+
 require_once 'scrapers/monster/MonsterScraper.php';
+require_once 'database/db_util.php';
+require_once 'trending.php';
+require_once 'views.php';
 
 //Array for holding keyword tokens from description input
 $KEYWORDS = array();
@@ -9,81 +13,112 @@ $companyFilter = '';
 
 if (isset($_GET["location"]) && isset($_GET["description"])) {
     $monster_scraper = new MonsterScraper();
+    // $db_conn = get_job_lube_db_conn();
     $JOBS = array();
-	
-	//Get keyword tokens from description input
-	$KEYWORDS = explode(" ", $_GET["description"]);
-	
+
+    //Format search terms for relevance-search keywords
+    $input = str_replace(',', ' ', $_GET["description"]);
+
+    //Get keyword tokens from description input
+    $KEYWORDS = explode(" ", $input);
+    //Log each term
+    foreach($KEYWORDS as $keyword) {
+        log_search_term($keyword);
+    }
+
     //If there are any results returned from scraping monster, collect them.
-    if ($monster_results = $monster_scraper->scrape_monster($_GET["location"], $_GET["description"])) {
+    if (($monster_results = $monster_scraper->scrape_monster($_GET["location"], $_GET["description"])) != null) {
         $JOBS += $monster_results;
-		
     }
     	 if (isset($_GET["filter-by-company"])) {
     		$companyFilter = $_GET["filter-by-company"];
     	} 
 
-	if (isset($_GET["sort-by"])) {
-		switch($_GET["sort-by"]) {
-			case 'date':
-				// Run function to sort the data by date and re-set the variable 
-			    // sort by date
-				usort($JOBS, 
-					function($a, $b) {
-						return $a->getDate() - $b->getDate();
-					}
-				);
-				break;
-			case 'relevance':
-				// Run function to sort the data by relevance and re-set the variable
-				// sort by relevance
-				usort($JOBS,
-					function($a, $b) {
-						GLOBAL $KEYWORDS;
-						$aDescription = $a->getDescription();
-						$bDescription = $b->getDescription();
-						$aNum = 0;
-						$bNum = 0;
-						foreach($KEYWORDS as $k) {
-							if(strpos($aDescription, $k) === false);
-							else $aNum++;
-							if(strpos($bDescription, $k) === false);
-							else $bNum++;
-						}
-						return $aNum - $bNum;
-					}
-				);
-				break;	
-		}
-
-	}
-
-	echo '<table class="table table-striped">
-			<thead>
-			  <tr>
-				<th>Description</th>
-				<th>Location</th>
-				<th>Company</th>
-				<th>Date</th>
-			  </tr>
-			</thead>
-			<tbody>';
-
-    foreach ($JOBS as $job) {
-    	    //if the companyFilter is empty or if the job contains the companyFilter, then show the job
-    	    if (isSubstring($job->getCompany(), $companyFilter)) {
-    	    	    echo "<tr>
-    	    	    	<td>" . $job->getDescription() . "</td>
-    	    	    	<td>" . $job->getLocation() . "</td>
-    	    	    	<td>" . $job->getCompany() . "</td>
-    	    	    	<td>" . $job->getDate() . "</td>
-    	    	    </tr>";
-    	    }
+    if (isset($_GET["sort-by"])) {
+        switch ($_GET["sort-by"]) {
+            case 'date':
+                // Run function to sort the data by date and re-set the variable 
+                // sort by date
+                usort($JOBS, function($a, $b) {
+                            return $a->getDate() - $b->getDate();
+                        }
+                );
+                break;
+            case 'relevance':
+                // Run function to sort the data by relevance and re-set the variable
+                // sort by relevance
+                usort($JOBS, function($a, $b) {
+                            GLOBAL $KEYWORDS;
+                            $aDescription = $a->getDescription();
+                            $bDescription = $b->getDescription();
+                            $aNum = 0;
+                            $bNum = 0;
+                            foreach ($KEYWORDS as $k) {
+                                if ($k == "")
+                                    continue;
+                                if (strpos($aDescription, $k) === false)
+                                    ;
+                                else
+                                    $aNum++;
+                                if (strpos($bDescription, $k) === false)
+                                    ;
+                                else
+                                    $bNum++;
+                            }
+                            return ($aNum < $bNum) ? -1 : 1;
+                        }
+                );
+                break;
+        }
     }
 
+    echo '<table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Description</th>
+                <th>Views</th>
+                <th>Location</th>
+                <th>Company</th>
+                <th>Date</th>
+                <th>Twitter</th>
+              </tr>
+            </thead>
+            <tbody>';
+    foreach ($JOBS as $job) {
+    	 //if the companyFilter is empty or if the job contains the companyFilter, then show the job
+    	    if (isSubstring($job->getCompany(), $companyFilter)) {
+    	    	echo "<tr>
+                	<td><a class='post_link' href='" . $job->getURL() . "'>" . $job->getDescription() . "</a></td>
+			 <td>" . get_views($job->getURL()) . "</td>
+			 <td>" . $job->getLocation() . "</td>
+			 <td>" . $job->getCompany() . "</td>
+			 <td>" . $job->getDate() . "</td>
+			 <td><a href=\"https://twitter.com/share\" class=\"twitter-share-button\" data-dnt=\"false\" data-count=\"none\" data-related=\"qi:Social Media Expert\" data-hashtags=\"JobLube\" data-text=\"I found this job: ". $job->getDescription() . " " . $job->getURL() ."\">Tweet</a></td>
+              </tr>";
+      }
+
+    }
     echo '</tbody> 
         </table> 
-        </div>';
+        </div>
+        <script>
+				!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+
+
+$(".post_link").click(function(e) {
+	e.preventDefault();
+	var url = $(this).attr("href")
+	
+	$.ajax({  
+		type: "POST",  
+	  	url: "add_post.php",  
+	  	data: { url: url },  
+	  	success: function() {  
+		  	window.location = url;
+	  	}  
+	});
+});
+				</script>';
 }
 
 /* function to see if the second string is part of the first string 
