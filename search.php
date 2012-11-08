@@ -90,7 +90,7 @@ if (isset($_GET["location"]) && isset($_GET["description"])) {
     	    	    //reason for comparing the above statement with !==false is b/c 
     	    	    // in the strpos(mainString, subString), if subString starts with the first character, strpos will return 0 (which will return false)
     	    	echo "<tr>
-                	<td><a class='post_link' href='" . $job->getURL() . "'>" . $job->getDescription() . "</a></td>
+                	<td><a class='post_link' href='" . $job->getURL() . "' target ='_blank'>" . $job->getDescription() . "</a></td>
 			 <td>" . get_views($job->getURL()) . "</td>
 			 <td>" . $job->getLocation() . "</td>
 			 <td>" . $job->getCompany() . "</td>
