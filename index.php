@@ -91,10 +91,33 @@ require_once 'database/db_util.php';
 					  	$("#filter").show();
 					  	$("#sort").show();
 						$('#results').html(data); 
+						edit_links(); // attach custom behavior for job links
 				  	}  
 				});
 			}
+
+			/* Attach custom behavior for job links */
+			function edit_links() {
+				$(".post_link").click(function(e) {
+					e.preventDefault();
+					var url = $(this).attr("href")
+					
+					$.ajax({  
+            		type: "POST",  
+            	  	url: "views.php",  
+            	  	data: { url: url },
+            	  	success: increment_views($(this))
+	            });
+
+	            window.open(url);
+				});
+			}
 			
+			/* Increments views counter by one */	
+			function increment_views(el) {
+				el.parent().next().text(parseInt(el.parent().next().text()) + 1);
+			}
+
 			$("#filter").hide();
 			$("#search-button").click(function(){	
 				getResults()
@@ -114,23 +137,6 @@ require_once 'database/db_util.php';
 			    	$("#search-button").click()
 			    }
 			});
-
-
-
-			$(".post_link").click(function(e) {
-				e.preventDefault();
-				var url = $(this).attr("href")
-				
-				$.ajax({  
-					type: "POST",  
-				  	url: "add_post.php",  
-				  	data: { url: url },  
-				  	success: function() {  
-					  	window.location = url;
-				  	}  
-				});
-			});
-
 			
 		</script>
 	</body>
