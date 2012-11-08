@@ -13,7 +13,7 @@ require_once 'database/db_util.php';
 		<div class="container">
 	  
 	  		<center>
-				<img src="/img/logo.png"/>
+				<img src="img/logo.png"/>
 				<div id="search">
 					<input type="text" id="description" class="input-large" placeholder="Description / Keywords" name="description" value="<?php if(isset($_GET['description'])) { echo $_GET['description']; }?>">
 					<input type="text" id="location" class="input-large" placeholder="Zip Code" name="location" value="<?php if(isset($_GET['location'])) { echo $_GET['location']; }?>">
