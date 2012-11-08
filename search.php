@@ -27,7 +27,7 @@ if (isset($_GET["location"]) && isset($_GET["description"])) {
     }
 
     //If there are any results returned from scraping monster, collect them.
-    if (($monster_results = $monster_scraper->scrape_monster($_GET["location"], $_GET["description"])) != null) {
+    if (!is_null($monster_results = $monster_scraper->scrape_monster($_GET["location"], $_GET["description"]))) {
         $JOBS += $monster_results;
     }
     	 if (isset($_GET["filter-by-company"])) {
@@ -102,25 +102,7 @@ if (isset($_GET["location"]) && isset($_GET["description"])) {
     }
     echo '</tbody> 
         </table> 
-        </div>
-        <script>
-				!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
-
-
-$(".post_link").click(function(e) {
-	e.preventDefault();
-	var url = $(this).attr("href")
-	
-	$.ajax({  
-		type: "POST",  
-	  	url: "add_post.php",  
-	  	data: { url: url },  
-	  	success: function() {  
-		  	window.location = url;
-	  	}  
-	});
-});
-	</script>';
+        </div>';
 }
 
 /* function to see if the second string is part of the first string 
