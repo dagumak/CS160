@@ -21,7 +21,8 @@ function get_views($url) {
 	$result = $mysqli->query($query);
 	
 	if ($result && $result->num_rows > 0) {
-		$count = $result->fetch_row()[0];
+		$row = $result->fetch_row(); 
+		$count = $row[0];
 		$result->free();
 	} else {
 		$count = 0;
