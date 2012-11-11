@@ -3,6 +3,7 @@ require_once 'trending.php';
 require_once 'database/db_util.php';
 ?>
 <!DOCTYPE html>
+
 <html>
 	<head>
 		<title>JobLube | Helping you slip into a job easier!</title>
