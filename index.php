@@ -5,7 +5,7 @@ require_once 'database/db_util.php';
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>JobLube</title>
+		<title>JobLube | Helping you slip into a job easier!</title>
 		<link href="css/bootstrap.min.css" rel="stylesheet">
 		<link href="css/joblube.css" rel="stylesheet">
 	</head>
