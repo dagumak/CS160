@@ -14,7 +14,7 @@ require_once 'database/db_util.php';
 		<div class="container">
 	  
 	  		<center>
-				<img src="img/logo.png"/>
+				<img src="img/logo.png" id='logo'/>
 				<div id="search">
 					<input type="text" id="description" class="input-large" placeholder="Description / Keywords" name="description" value="<?php if(isset($_GET['description'])) { echo $_GET['description']; }?>">
 					<input type="text" id="location" class="input-large" placeholder="Zip Code" name="location" value="<?php if(isset($_GET['location'])) { echo $_GET['location']; }?>">
@@ -35,18 +35,21 @@ require_once 'database/db_util.php';
 				</div>
 			</center>
 			
-			<center><div id="loader" style="display:none;margin-top:175px;background: url(img/loading.gif) no-repeat center center; width: 175px;height: 175px;"></div></center>
-			
-			<div id="sort">
-				Sort by:
-				<a id='date'>date</a>
-				<a id='relevance'>relevance</a>
-			</div>	
-			
-			<div id="filter">
-				Filter by company:
-				<input type = "text" id = "companyName" name="companyName" placeholder="Company">
-				<button type = "submit" class="btn" id='filter-button'>Filter</button>
+			<center><div id="loader" style="display:none;margin-top:10px;background: url(img/loading.gif) no-repeat center center; width: 175px;height: 175px;"></div></center>
+			<div id="refine">
+				 <legend>Result Refinement</legend>
+				<div id="sort">
+					Sort by:
+					<a id='date'>date</a>
+					<a id='relevance'>relevance</a>
+				</div>	
+				
+				<div id="filter">
+					Filter by company:
+					<input type = "text" id = "companyName" name="companyName" placeholder="Company">
+					<button type = "submit" class="btn" id='filter-button'>Filter</button>
+				</div>
+				</pre>
 			</div>
 			<div id="results"></div>
 			
@@ -73,8 +76,7 @@ require_once 'database/db_util.php';
 					return
 				}
 
-				$("#sort").hide();
-				$("#filter").hide();
+				$("#refine").hide();
 				$("#loader").show();
 				$('#results').html(""); 	
 				var description = $("input#description").val();
@@ -88,8 +90,8 @@ require_once 'database/db_util.php';
 				  	data: dataString,  
 				  	success: function(data) {  
 					  	$("#loader").hide();
-					  	$("#filter").show();
-					  	$("#sort").show();
+					  	$("#logo").css("margin-top", "10px");
+					  	$("#refine").show();
 						$('#results').html(data); 
 						edit_links(); // attach custom behavior for job links
 				  	}  
@@ -118,7 +120,6 @@ require_once 'database/db_util.php';
 				el.parent().next().text(parseInt(el.parent().next().text()) + 1);
 			}
 
-			$("#filter").hide();
 			$("#search-button").click(function(){	
 				getResults()
 			});
