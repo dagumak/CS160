@@ -1,4 +1,1 @@
-CS160
-=======
-
-Project folder for CS160 class. We'll use this folder for actual project related things.
+This project was built for San José State University's CS160 class. We built a website that aggregates data from Dice.com and Monster.com with a few features.
