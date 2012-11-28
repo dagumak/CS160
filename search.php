@@ -21,7 +21,7 @@ $KEYWORDS = array();
 //Variable for the company to be filtered
 $companyFilter = '';
 
-if (isset($_GET["location"]) && isset($_GET["description"]) && !empty($_GET["description"])) {
+if (isset($_GET["location"]) && isset($_GET["description"])) {
     $monster_scraper = new MonsterScraper();
     // $db_conn = get_job_lube_db_conn();
     $JOBS = array();

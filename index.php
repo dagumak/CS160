@@ -70,10 +70,9 @@ require_once 'database/db_util.php';
 			        sort = arguments[0];
 			    }
 
-				if( $("#description").val().length > 0 ) {
+				if( $("#description").val() == '' ) {
 					// We can do client side checking here and throw errors
 					// Be sure to check on server side too.
-					
 					return
 				}
 
