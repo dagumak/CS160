@@ -101,21 +101,33 @@ if (isset($_GET["location"]) && isset($_GET["description"])) {
               </tr>
             </thead>
             <tbody>';
-    foreach ($JOBS as $job) {
-    	 //if the companyFilter is empty or if the job contains the companyFilter, then show the job
-    	    if (isSubstring($job->getCompany(), $companyFilter) !== false) {
-    	    	    //reason for comparing the above statement with !==false is b/c 
-    	    	    // in the strpos(mainString, subString), if subString starts with the first character, strpos will return 0 (which will return false)
-    	    	echo "<tr>
-                	<td><a class='post_link' href='" . $job->getURL() . "' target ='_blank'>" . $job->getDescription() . "</a></td>
-			 <td>" . get_views($job->getURL()) . "</td>
-			 <td>" . $job->getLocation() . "</td>
-			 <td>" . $job->getCompany() . "</td>
-			 <td>" . $job->getDate() . "</td>
-			 <td><a href=\"https://twitter.com/share\" class=\"twitter-share-button\" data-dnt=\"false\" data-count=\"none\" data-related=\"qi:Social Media Expert\" data-hashtags=\"JobLube\" data-text=\"I found this job: ". $job->getDescription() . " " . $job->getURL() ."\">Tweet</a></td>
-              </tr>";
-      }
-
+	$COMPANIES = explode(",", $companyFilter);
+    foreach ($JOBS as $job)
+	{
+		$flag = false;
+		foreach($COMPANIES as $company)
+		{
+			$company = trim($company);
+			if (isSubstring($job->getCompany(), $company) !== false){
+				//reason for comparing the above statement with !==false is b/c 
+				//in the strpos(mainString, subString), if subString starts with
+				//the first character, strpos will return 0 (which will return false)
+				$flag = true;
+				break;
+			}
+		}
+		//if the companyFilter is empty or if the job contains the companyFilter, then show the job
+		if ($flag == true)
+		{
+			echo "<tr>
+					<td><a class='post_link' href='" . $job->getURL() . "' target ='_blank'>" . $job->getDescription() . "</a></td>
+					<td>" . get_views($job->getURL()) . "</td>
+					<td>" . $job->getLocation() . "</td>
+					<td>" . $job->getCompany() . "</td>
+					<td>" . $job->getDate() . "</td>
+					<td><a href=\"https://twitter.com/share\" class=\"twitter-share-button\" data-dnt=\"false\" data-count=\"none\" data-related=\"qi:Social Media Expert\" data-hashtags=\"JobLube\" data-text=\"I found this job: ". $job->getDescription() . " " . $job->getURL() ."\">Tweet</a></td>
+				</tr>";
+		}
     }
     echo '</tbody> 
         </table> 
@@ -129,7 +141,11 @@ if (isset($_GET["location"]) && isset($_GET["description"])) {
 	same as strpos except if the second string is empty then this
 	function returns true */
 function isSubstring($mainString, $subString) {
+	GLOBAL $RESERVED;
 	if ($subString == '' or $subString == null) {
+		return true;
+	}
+	else if(strpos($RESERVED, $subString) !== false){
 		return true;
 	}
 	else {
