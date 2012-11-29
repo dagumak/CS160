@@ -15,6 +15,9 @@ require_once 'database/db_util.php';
 require_once 'trending.php';
 require_once 'views.php';
 
+//Reserved Characters to ignore for trending terms
+$RESERVED = ".,?/~`!@#$%^&*()-_=+\\| {}[]";
+
 //Array for holding keyword tokens from description input
 $KEYWORDS = array();
 
@@ -32,8 +35,12 @@ if (isset($_GET["location"]) && isset($_GET["description"])) {
     //Get keyword tokens from description input
     $KEYWORDS = explode(" ", $input);
     //Log each term
-    foreach($KEYWORDS as $keyword) {
-        log_search_term($keyword);
+    foreach($KEYWORDS as $keyword)
+	{
+		$keyword = trim($keyword);
+		if(strlen($keyword) == 0) continue;
+		else if(strstr($RESERVED, $keyword) === FALSE)
+			log_search_term($keyword);
     }
 
     //If there are any results returned from scraping monster, collect them.
