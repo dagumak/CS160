@@ -15,7 +15,7 @@ require_once 'database/db_util.php';
 require_once 'trending.php';
 require_once 'views.php';
 
-//Reserved Characters to ignore for trending terms
+//Reserved Characters to ignore for one-length string trending terms
 $RESERVED = ".,?/~`!@#$%^&*()-_=+\\| {}[]";
 
 //Array for holding keyword tokens from description input
