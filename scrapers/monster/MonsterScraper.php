@@ -1,24 +1,27 @@
 <?php
-
+require_once('scrapers/Scraper.php');
 require_once('scrapers/JobListing.php');
 require_once('scrapers/monster/MonsterJob.php');
 
 /**
  * Scraper for scraping job listings from Monster.com
  */
-class MonsterScraper {
+class MonsterScraper extends Scraper {
 
     public function scrape_monster($location, $description) {
 
         $numTerms = substr_count($description, ','); //This counts the number of independently inputed search terms
         $tail = str_repeat("5", $numTerms); //Monster URLS seem to append a '5' for every separated search term
         //Format description and location
-        $description = str_replace(' ', '-', $description); //Removes spaces for URL
-        $location = str_replace(' ', '-', $location); //Removes spaces for URL
-        $location = str_replace(',', '__2C', $location); //Formats comma for URL ('__2C' = ',') 
+        //$description = str_replace(' ', '-', $description); //Removes spaces for URL
+        //$location = str_replace(' ', '-', $location); //Removes spaces for URL
+        //$location = str_replace(',', '__2C', $location); //Formats comma for URL ('__2C' = ',') 
 
+		$description = $this->parseSymbols($description);
+		$location = $this->parseSymbols($location);
+		
         $url = "http://jobsearch.monster.com/search/" . $description . "_5" . $tail . "?where=" . $location;
-
+		
         /*// Create DOM from URL or file
         $ckfile = "cookies.txt";
         //This should probably be changed to something dynamic.
