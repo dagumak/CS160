@@ -1,24 +1,24 @@
 <?php
 
 /**
- * A job listing retrieved from Monster.com
+ * A job listing retrieved from dice.com
  *
  * @author Matt Castagnolo
  */
-class MonsterJob extends JobListing {
+class DiceJob extends JobListing {
 
     function __construct() {
         parent::__construct();
     }
-    
+
     public function setUrl($url) {
-        parent::setMonsterUrl($url);
+        parent::setDiceUrl($url);
     }
-    
+
     public function getUrl() {
-        parent::getMonsterUrl();
+        return parent::getDiceUrl();
     }
-    
+
     public function compareListing($other_listing) {
         return parent::compareListing($other_listing);
     }

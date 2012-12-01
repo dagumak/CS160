@@ -6,13 +6,12 @@
  *
  * @author Matt Castagnolo
  */
-class JobListing {
+class JobGridElement {
 
     private $location;
     private $description;
     private $company;
     private $date;
-    private $domain;
     private $monster_url = null;
     private $dice_url = null;
     
@@ -52,37 +51,12 @@ class JobListing {
         return $this->date;
     }
 
-    public function setMonsterUrl($monster_url) {
-        $this->monster_url = $monster_url;
-    }
-    
-    public function getMonsterUrl() {
-        return $this->monster_url;
+    public function setDomain($domain) {
+        $this->domain = $domain;
     }
 
-    public function setDiceUrl($dice_url) {
-        $this->dice_url = $dice_url;
-    }
-    
-    public function getDiceUrl() {
-        return $this->dice_url;
-    }
-    
-    public function getUrl() {
-        if($this->dice_url) {
-            return $this->dice_url;
-        }
-        else if($this->monster_url) {
-            return $this->monster_url;
-        }
-        else return null;
-    }
-    
-    public function compareListing($other_listing) {
-        if( ($this->getCompany() == $other_listing->getCompany()) && ($this->getDescription() == $other_listing->getDescription) ){
-            return true;
-        }
-        return false;
+    public function getDomain() {
+        return $this->domain;
     }
 
 }

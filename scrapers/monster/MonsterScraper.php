@@ -62,10 +62,10 @@ class MonsterScraper extends Scraper {
         $monster_job = new MonsterJob();
 
         $jobTitleAttrs = $e->childNodes->item(2)->childNodes->item(1)->childNodes->item(1)->childNodes->item(1)->attributes;
-        $description = $jobTitleAttrs->item(2)->nodeValue;
+        $description = trim($jobTitleAttrs->item(2)->nodeValue);
         $url = $jobTitleAttrs->item(5)->nodeValue;
-        $location = $e->childNodes->item(4)->nodeValue;
-        $company = $e->childNodes->item(2)->childNodes->item(1)->childNodes->item(3)->childNodes->item(1)->childNodes->item(1)->nodeValue;
+        $location = trim($e->childNodes->item(4)->nodeValue);
+        $company = trim($e->childNodes->item(2)->childNodes->item(1)->childNodes->item(3)->childNodes->item(1)->childNodes->item(1)->nodeValue);
         $date = trim($e->childNodes->item(2)->childNodes->item(1)->childNodes->item(7)->nodeValue);
 
         $monster_job->setLocation($location);
