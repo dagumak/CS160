@@ -79,10 +79,14 @@ require_once 'database/db_util.php';
 				$("#refine").hide();
 				$("#loader").show();
 				$('#results').html(""); 	
-				var description = $("input#description").val();
+				
+				var description = encodeURIComponent($("input#description").val());
+				//The above encoding is neccesary for handling specific input such as '#'
+				//Which is reserved according to URI rules.
+				
 				var location = $("input#location").val();
 				var theCompany = $("input#companyName").val();
-				var dataString = 'description='+ description + '&location=' + location + '&sort-by=' + sort + '&filter-by-company=' + theCompany;
+				var dataString = '&description='+ description + '&location=' + location + '&sort-by=' + sort + '&filter-by-company=' + theCompany;
 				
 				$.ajax({  
 					type: "GET",  
