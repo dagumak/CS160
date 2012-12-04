@@ -61,35 +61,12 @@ if (isset($_GET["location"]) && isset($_GET["description"])) {
             case 'date':
                 // Run function to sort the data by date and re-set the variable 
                 // sort by date
-                usort($JOBS, function($a, $b) {
-                            return $a->getDate() - $b->getDate();
-                        }
-                );
+                usort($JOBS, "compareDates");
                 break;
             case 'relevance':
                 // Run function to sort the data by relevance and re-set the variable
                 // sort by relevance
-                usort($JOBS, function($a, $b) {
-                            GLOBAL $KEYWORDS;
-                            $aDescription = $a->getDescription();
-                            $bDescription = $b->getDescription();
-                            $aNum = 0;
-                            $bNum = 0;
-                            foreach ($KEYWORDS as $k) {
-                                if ($k == "")
-                                    continue;
-                                if (strpos($aDescription, $k) === false)
-                                    ;
-                                else
-                                    $aNum++;
-                                if (strpos($bDescription, $k) === false)
-                                    ;
-                                else
-                                    $bNum++;
-                            }
-                            return ($aNum < $bNum) ? -1 : 1;
-                        }
-                );
+                usort($JOBS, "compareRelevancy");
                 break;
         }
     }
@@ -176,5 +153,31 @@ function mergeDupes($monster_jobs, $dice_jobs) {
     }
     return $jobs;
 }
+
+function compareDates($jobA, $jobB) {
+    return strtotime($jobA->getDate()) - strtotime($jobB->getDate());
+}
+
+function compareRelevancy   ($a, $b) {
+                            GLOBAL $KEYWORDS;
+                            $aDescription = $a->getDescription();
+                            $bDescription = $b->getDescription();
+                            $aNum = 0;
+                            
+                            $bNum = 0;
+                            foreach ($KEYWORDS as $k) {
+                                if ($k == "")
+                                    continue;
+                                if (strpos($aDescription, $k) === false)
+                                    ;
+                                else
+                                    $aNum++;
+                                if (strpos($bDescription, $k) === false)
+                                    ;
+                                else
+                                    $bNum++;
+                            }
+                            return ($aNum < $bNum) ? -1 : 1;
+                        }
 
 ?>
