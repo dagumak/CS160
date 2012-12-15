@@ -49,7 +49,7 @@ if (isset($_GET["location"]) && isset($_GET["description"])) {
         $JOBS += $results;
     }*/
     
-    $JOBS = mergeDupes($monster_scraper->scrape_monster($_GET["location"], $_GET["description"]),$dice_scraper->scrape_dice($_GET["location"], $_GET["description"]));
+    $JOBS = mergeDupes($monster_scraper->scrape_monster($_GET["location"], $_GET["description"], $_GET["radius"]),$dice_scraper->scrape_dice($_GET["location"], $_GET["description"], $_GET["radius"]));
     
 
     if (isset($_GET["filter-by-company"])) {
@@ -70,7 +70,7 @@ if (isset($_GET["location"]) && isset($_GET["description"])) {
                 break;
         }
     }
-
+    
     echo '<table class="table table-striped">
             <thead>
               <tr>

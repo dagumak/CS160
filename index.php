@@ -17,7 +17,16 @@ require_once 'database/db_util.php';
 				<img src="img/logo.png" id='logo'/>
 				<div id="search">
 					<input type="text" id="description" class="input-large" placeholder="Description / Keywords" name="description" value="<?php if(isset($_GET['description'])) { echo $_GET['description']; }?>">
-					<input type="text" id="location" class="input-large" placeholder="Zip Code" name="location" value="<?php if(isset($_GET['location'])) { echo $_GET['location']; }?>">
+					<input type="text" id="location" class="input-large" placeholder="ZipCode Or City State" name="location" value="<?php if(isset($_GET['location'])) { echo $_GET['location']; }?>">
+					<select id="radiusMenu" name="radius" value="<?php if(isset($_GET['radius'])) { echo $_GET['radius']; }?>">
+						<option value="5">5 miles</option>
+						<option value="10">10 miles</option>
+						<option selected value="20">20 miles</option>
+						<option value="30">30 miles</option>
+						<option value="40">40 miles</option>
+						<option value="50">50 miles</option>
+						<option value="75">75 miles</option>
+					</select>
 					<button type="submit" class="btn" id='search-button'>Search</button>
 				</div>
 				<div id="trending">
@@ -63,9 +72,10 @@ require_once 'database/db_util.php';
 		<script>
 			// Twitter
             
-            
+			var filterClicked = false; //flag to tell whether filter button was clicked
 			function getResults() {
- 				var sort = ''; 	
+ 				var sort = '';
+ 				
 			    if (arguments.length == 1) {
 			        sort = arguments[0];
 			    }
@@ -85,8 +95,16 @@ require_once 'database/db_util.php';
 				//Which is reserved according to URI rules.
 				
 				var location = $("input#location").val();
-				var theCompany = $("input#companyName").val();
-				var dataString = '&description='+ description + '&location=' + location + '&sort-by=' + sort + '&filter-by-company=' + theCompany;
+				var theCompany = '';
+				
+				/*If the filter button was clicked, then filter it by company's name
+				  Else don't filter it.*/
+				if (filterClicked == true) {
+					theCompany = $("input#companyName").val();
+				}
+				
+				var radius = $("select#radiusMenu").val();
+				var dataString = '&description='+ description + '&location=' + location + '&sort-by=' + sort + '&filter-by-company=' + theCompany + '&radius=' + radius;
 				
 				$.ajax({  
 					type: "GET",  
@@ -124,7 +142,9 @@ require_once 'database/db_util.php';
 				el.parent().next().text(parseInt(el.parent().next().text()) + 1);
 			}
 
-			$("#search-button").click(function(){	
+			$("#search-button").click(function(){
+				filterClicked = false;
+				companyName.value = ''; //clear the company filter input box
 				getResults()
 			});
 
@@ -134,6 +154,7 @@ require_once 'database/db_util.php';
 			});
 			
 			$("#filter-button").click(function(){
+				filterClicked = true;
 				getResults()
 			});
 			

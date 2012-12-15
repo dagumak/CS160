@@ -8,8 +8,8 @@ require_once('scrapers/monster/MonsterJob.php');
  */
 class MonsterScraper extends Scraper {
 
-    public function scrape_monster($location, $description) {
-
+    public function scrape_monster($location, $description, $radius) {
+    	
         $numTerms = substr_count($description, ','); //This counts the number of independently inputed search terms
         $tail = str_repeat("5", $numTerms); //Monster URLS seem to append a '5' for every separated search term
         //Format description and location
@@ -20,7 +20,7 @@ class MonsterScraper extends Scraper {
 		$description = $this->parseSymbols($description);
 		$location = $this->parseSymbols($location);
 		
-        $url = "http://jobsearch.monster.com/search/" . $description . "_5" . $tail . "?where=" . $location;
+        $url = "http://jobsearch.monster.com/search/" . $description . "_5" . $tail . "?where=" . $location . "&rad=" . $radius;
 		
         /*// Create DOM from URL or file
         $ckfile = "cookies.txt";
