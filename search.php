@@ -155,7 +155,7 @@ function mergeDupes($monster_jobs, $dice_jobs) {
 }
 
 function compareDates($jobA, $jobB) {
-    return strtotime($jobA->getDate()) - strtotime($jobB->getDate());
+    return ($jobA->getDate()) - ($jobB->getDate());
 }
 
 function compareRelevancy   ($a, $b) {
