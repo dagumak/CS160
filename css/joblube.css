@@ -2,6 +2,15 @@
  * JobLube CSS
  */
 
- #sort {
- 	display: none;
- }
+
+#logo {
+	margin-top: 150px;
+}
+
+#refine {
+	display: none;
+}
+
+#refine {
+	padding: 10px;
+}
