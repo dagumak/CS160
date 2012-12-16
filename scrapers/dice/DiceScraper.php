@@ -76,12 +76,112 @@ class DiceScraper extends Scraper {
         $location = trim($e->childNodes->item(4)->nodeValue);
         $date = trim($e->childNodes->item(6)->nodeValue);
 
+        $modifiedDate = $this->normalizeDate($date);
         $dice_job->setLocation($location);
         $dice_job->setDescription($description);
         $dice_job->setCompany($company);
-        $dice_job->setDate($date);
+        $dice_job->setDate($modifiedDate);
         $dice_job->setURL($url);
         return $dice_job;
+    }
+    
+    /* This method is to change the date format returned by Dice. 
+     The format will be similar to that of Monster's. For example, if the job 
+     listing date was Nov-20-2012 and today is Dec-10-2012, this method will 
+     return the string '19 days ago' */
+    private function normalizeDate($date) {
+    	    $newDate;
+    	    $month = substr($date, 0, 3); //extract the month out of the date
+    	    $day = substr($date, 4, 2); //extract the day out of the date
+    	    settype($day, "integer"); //set day to integer
+    	    $daysago;
+    	    $intMonth;
+    	    $additionalDays; //if month is not the same then add additional days
+    	   
+    	    /* This is how the addition is done. Based on what the previous 
+    	    month was, subtract the day from the total number in the month
+    	    $additionalDays = total number of days in the month - day [of the listing]
+    	    $daysago = additionalDays + today's day */
+    	    
+    	    switch ($month) {
+    	    	case "Jan":
+    	    		$additionalDays = 31 - $day;
+    	    		$intMonth = 1;
+    	    		break;
+    	    	case "Feb":
+    	    		$additionalDays = 29 - $day;
+    	    		$intMonth = 2;
+    	    		break;
+    	    	case "Mar":
+    	    		$additionalDays = 31 - $day;
+    	    		$intMonth = 3;
+    	    		break;
+    	    	case "Apr":
+    	    		$additionalDays = 30 - $day;
+    	    		$intMonth = 4;
+    	    		break;
+    	    	case "May":
+    	    		$additionalDays = 31 - $day;
+    	    		$intMonth = 5;
+    	    		break;
+    	    	case "Jun":
+    	    		$additionalDays = 30 - $day;
+    	    		$intMonth = 6;
+    	    		break;
+    	    	case "Jul":
+    	    		$additionalDays = 31 - $day;
+    	    		$intMonth = 7;
+    	    		break;
+    	    	case "Aug": 
+    	    		$additionalDays = 31 - $day;
+    	    		$intMonth = 8;
+    	    		break;
+    	    	case "Sep":
+    	    		$additionalDays = 30 - $day;
+    	    		$intMonth = 9;
+    	    		break;
+    	    	case "Oct":
+    	    		$additionalDays = 31 - $day;
+    	    		break;
+    	    	case "Nov":
+    	    		$additionalDays = 30 - $day;
+    	    		$intMonth = 11;
+    	    		break;
+    	    	case "Dec":
+    	    		$additionalDays = 31 - $day;
+    	    		$intMonth = 12;
+    	    		break;
+    	    }
+    	    
+    	    $todaysDay = date('d');
+    	    $currentMonth = date('m');
+    	    settype($todaysDay, "integer");
+    	    settype($currentMonth, "integer");
+    	    settype($additionalDays, "integer");
+    	    settype($intMonth, "integer");
+    	    settype($daysago, "integer");
+    	    
+    	    //if the job listing month is same as the current month
+    	    if ($intMonth == $currentMonth) {
+    	    	    if ($day == $todaysDay) {//if the date is same as today's date 
+    	    	    	return "Today";
+    	    	    }
+    	    	    //subtract today's day from the job listing day
+    	    	    $daysago = $todaysDay - $day; 
+    	    }
+    	    else {
+    	    	    //add this months days to the last month's days from the job listing day
+    	    	    $daysago = ($todaysDay + $additionalDays - 1); 
+    	    }
+    	    
+    	    if ($daysago == 1) {
+    	    	    $newDate = $daysago . " day ago";
+    	    }
+    	    else {
+    	    	    $newDate = $daysago . " days ago";
+    	    }
+    	    
+    	    return $newDate;
     }
 
 }
