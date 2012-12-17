@@ -16,11 +16,10 @@
 	 * Found at: http://www.blooberry.com/indexdot/html/topics/urlencoding.htm
 	 */
 	public function parseSymbols($string) {
-		$string = str_replace("\x20", "-", $string);	//Space replacement
-		$string = str_replace("\t", "-", $string);		//Tab replacement
-		$string = str_replace('+', '__2B', $string);
-		$string = str_replace(',', '__2C', $string);
-		$string = str_replace('#', '__23', $string);
+		$string = str_replace(", ", "%2C", $string);	//Comma with a space
+		$string = str_replace('+', '%2B', $string);
+		$string = str_replace(',', '%2C', $string);
+		$string = str_replace('#', '%23', $string);
 		return $string;
 	}
  }
