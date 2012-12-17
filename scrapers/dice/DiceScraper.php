@@ -81,7 +81,7 @@ class DiceScraper extends Scraper {
         $dice_job->setDescription($description);
         $dice_job->setCompany($company);
         $dice_job->setDate($modifiedDate);
-        $dice_job->setURL($url);
+        $dice_job->setUrl($url);
         return $dice_job;
     }
     
