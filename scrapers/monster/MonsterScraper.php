@@ -76,4 +76,11 @@ class MonsterScraper extends Scraper {
         return $monster_job;
     }
 
+	public function parseSymbols($string)
+	{
+		$string = parent::parseSymbols($string);
+		$string = str_replace("\x20", "-", $string);	//Space replacement
+		$string = str_replace("\t", "-", $string);		//Tab replacement
+		return $string;
+	}
 }
