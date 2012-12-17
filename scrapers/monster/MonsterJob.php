@@ -16,7 +16,7 @@ class MonsterJob extends JobListing {
     }
     
     public function getUrl() {
-        parent::getMonsterUrl();
+        return parent::getMonsterUrl();
     }
     
     public function compareListing($other_listing) {
