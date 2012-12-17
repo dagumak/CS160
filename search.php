@@ -99,12 +99,12 @@ if (isset($_GET["location"]) && isset($_GET["description"])) {
         //if the companyFilter is empty or if the job contains the companyFilter, then show the job
         if ($flag == true) {
             echo "<tr>
-					<td><a class='post_link' href='" . $job->getURL() . "' target ='_blank'>" . $job->getDescription() . "</a></td>
-					<td>" . get_views($job->getURL()) . "</td>
+					<td><a class='post_link' href='" . $job->getUrl() . "' target ='_blank'>" . $job->getDescription() . "</a></td>
+					<td>" . get_views($job->getUrl()) . "</td>
 					<td>" . $job->getLocation() . "</td>
 					<td>" . $job->getCompany() . "</td>
 					<td>" . $job->getDate() . "</td>
-					<td><a href=\"https://twitter.com/share\" class=\"twitter-share-button\" data-dnt=\"false\" data-count=\"none\" data-related=\"qi:Social Media Expert\" data-hashtags=\"JobLube\" data-text=\"I found this job: " . $job->getDescription() . " " . $job->getURL() . "\">Tweet</a></td>
+					<td><a href=\"https://twitter.com/share\" class=\"twitter-share-button\" data-dnt=\"false\" data-count=\"none\" data-related=\"qi:Social Media Expert\" data-hashtags=\"JobLube\" data-text=\"I found this job: " . $job->getDescription() . " " . $job->getUrl() . "\">Tweet</a></td>
 				</tr>";
         }
     }
