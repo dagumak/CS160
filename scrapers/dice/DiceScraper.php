@@ -72,7 +72,9 @@ class DiceScraper extends Scraper {
         $dice_job = new DiceJob();
         $description = trim($e->childNodes->item(0)->childNodes->item(1)->childNodes->item(0)->nodeValue);
         $url = "http://seeker.dice.com" . $e->childNodes->item(0)->childNodes->item(1)->childNodes->item(0)->attributes->item(0)->nodeValue;
-        $company = trim($e->childNodes->item(2)->childNodes->item(1)->nodeValue);
+        $company = $e->childNodes->item(2)->childNodes->item(1);
+		if($company != null) $company = trim($company->nodeValue);
+		else($company = "Unknown");
         $location = trim($e->childNodes->item(4)->nodeValue);
         $date = trim($e->childNodes->item(6)->nodeValue);
 
@@ -183,5 +185,11 @@ class DiceScraper extends Scraper {
     	    
     	    return $newDate;
     }
-
+	public function parseSymbols($string)
+	{
+		$string = parent::parseSymbols($string);
+		$string = str_replace("\x20", "+", $string);	//Space replacement
+		$string = str_replace("\t", "+", $string);		//Tab replacement
+		return $string;
+	}
 }
