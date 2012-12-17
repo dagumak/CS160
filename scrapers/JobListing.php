@@ -79,7 +79,7 @@ class JobListing {
     }
     
     public function compareListing($other_listing) {
-        if( ($this->getCompany() == $other_listing->getCompany()) && ($this->getDescription() == $other_listing->getDescription) ){
+        if( ($this->getCompany() == $other_listing->getCompany()) && ($this->getDescription() == $other_listing->getDescription())  && ($this->getLocation() == $other_listing->getLocation())){
             return true;
         }
         return false;
