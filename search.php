@@ -174,7 +174,7 @@ function compareRelevancy   ($a, $b) {
                                 else
                                     $bNum++;
                             }
-                            return ($aNum < $bNum) ? -1 : 1;
+                            return ($aNum < $bNum) ? 1 : -1;
                         }
 
 ?>
