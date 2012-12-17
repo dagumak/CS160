@@ -73,6 +73,9 @@ class DiceScraper extends Scraper {
         $description = trim($e->childNodes->item(0)->childNodes->item(1)->childNodes->item(0)->nodeValue);
         $url = "http://seeker.dice.com" . $e->childNodes->item(0)->childNodes->item(1)->childNodes->item(0)->attributes->item(0)->nodeValue;
         $company = $e->childNodes->item(2)->childNodes->item(1);
+		//Some company name fields on dice.com are not wrapped with href attribute tags
+		//This check prevents php from reporting an error, such companies are listed by
+		//joblube.com as unknown.
 		if($company != null) $company = trim($company->nodeValue);
 		else($company = "Unknown");
         $location = trim($e->childNodes->item(4)->nodeValue);
